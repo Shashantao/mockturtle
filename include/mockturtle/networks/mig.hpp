@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,11 +28,6 @@
   \brief MIG logic network implementation
 
   \author Eleonora Testa
-  \author Heinz Riener
-  \author Jinzheng Tu
-  \author Mathias Soeken
-  \author Max Austin
-  \author Walter Lau Neto
 */
 
 #pragma once
@@ -155,13 +150,6 @@ public:
     {
       return {index, complement};
     }
-
-#if __cplusplus > 201703L
-    bool operator==( mig_storage::node_type::pointer_type const& other ) const
-    {
-      return data == other.data;
-    }
-#endif
   };
 
   mig_network()
@@ -354,7 +342,7 @@ public:
 
     for ( auto const& fn : _events->on_add )
     {
-      (*fn)( index );
+      fn( index );
     }
 
     return {index, node_complement};
@@ -510,7 +498,7 @@ public:
     _hash_obj.children[0] = child0;
     _hash_obj.children[1] = child1;
     _hash_obj.children[2] = child2;
-    if ( const auto it = _storage->hash.find( _hash_obj ); it != _storage->hash.end() && it->second != old_node )
+    if ( const auto it = _storage->hash.find( _hash_obj ); it != _storage->hash.end() )
     {
       return std::make_pair( n, signal( it->second, 0 ) );
     }
@@ -534,7 +522,7 @@ public:
 
     for ( auto const& fn : _events->on_modified )
     {
-      (*fn)( n, {old_child0, old_child1, old_child2} );
+      fn( n, {old_child0, old_child1, old_child2} );
     }
 
     return std::nullopt;
@@ -542,9 +530,6 @@ public:
 
   void replace_in_outputs( node const& old_node, signal const& new_signal )
   {
-    if ( is_dead( old_node ) )
-      return;
-
     for ( auto& output : _storage->outputs )
     {
       if ( output.index == old_node )
@@ -552,19 +537,16 @@ public:
         output.index = new_signal.index;
         output.weight ^= new_signal.complement;
 
-        if ( old_node != new_signal.index )
-        {
-          // increment fan-in of new node
-          _storage->nodes[new_signal.index].data[0].h1++;
-        }
+        // increment fan-in of new node
+        _storage->nodes[new_signal.index].data[0].h1++;
       }
     }
   }
 
   void take_out_node( node const& n )
   {
-    /* we cannot delete CIs, constants, or already dead nodes */
-    if ( n == 0 || is_ci( n ) || is_dead( n ) )
+    /* we cannot delete CIs or constants */
+    if ( n == 0 || is_ci( n ) )
       return;
 
     auto& nobj = _storage->nodes[n];
@@ -573,7 +555,7 @@ public:
 
     for ( auto const& fn : _events->on_delete )
     {
-      (*fn)( n );
+      fn( n );
     }
 
     for ( auto i = 0u; i < 3u; ++i )
@@ -606,7 +588,7 @@ public:
 
       for ( auto idx = 1u; idx < _storage->nodes.size(); ++idx )
       {
-        if ( is_ci( idx ) || is_dead( idx ) )
+        if ( is_ci( idx ) )
           continue; /* ignore CIs */
 
         if ( const auto repl = replace_in_node( idx, _old, _new ); repl )

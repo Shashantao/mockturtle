@@ -47,10 +47,7 @@ int main()
   {
     fmt::print( "[i] processing {}\n", benchmark );
     aig_network aig;
-    if ( lorina::read_aiger( benchmark_path( benchmark ), aiger_reader( aig ) ) != lorina::return_code::success )
-    {
-      continue;
-    }
+    lorina::read_aiger( benchmark_path( benchmark ), aiger_reader( aig ) );
 
     balancing_params ps;
     balancing_stats st4, st6;

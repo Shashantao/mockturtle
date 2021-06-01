@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,8 +28,6 @@
   \brief Cut enumeration based on spectral properties of a function
 
   \author Giulia Meuli
-  \author Heinz Riener
-  \author Mathias Soeken
 */
 
 #pragma once

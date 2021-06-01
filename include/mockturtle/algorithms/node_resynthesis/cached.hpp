@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -27,13 +27,10 @@
   \file cached.hpp
   \brief Generic resynthesis with a cache
 
-  \author Heinz Riener
   \author Mathias Soeken
 */
 
 #pragma once
-
-#if !__clang__ || __clang_major__ > 9
 
 #include <cstdint>
 #if __GNUC__ == 7
@@ -65,13 +62,13 @@ struct no_blacklist_cache_info
   }
 };
 
-inline void to_json( nlohmann::json& j, no_blacklist_cache_info const& info )
+void to_json( nlohmann::json& j, no_blacklist_cache_info const& info )
 {
   (void)info;
   j = nullptr;
 }
 
-inline void from_json( nlohmann::json const& j, no_blacklist_cache_info& info )
+void from_json( nlohmann::json const& j, no_blacklist_cache_info& info )
 {
   (void)j;
   (void)info;
@@ -139,7 +136,7 @@ private:
     }
   };
 
-  bool is_blacklisted( kitty::dynamic_truth_table const& tt ) const
+  bool is_blacklisted( kitty::dynamic_truth_table const& tt )
   {
     auto it = _blacklist_cache.find( {tt, _blacklist_cache_info} );
 
@@ -163,7 +160,7 @@ private:
 
 public:
   template<typename LeavesIterator, typename Fn>
-  void operator()( Ntk& ntk, kitty::dynamic_truth_table const& function, LeavesIterator begin, LeavesIterator end, Fn&& fn ) const
+  void operator()( Ntk& ntk, kitty::dynamic_truth_table const& function, LeavesIterator begin, LeavesIterator end, Fn&& fn )
   {
     if ( auto const key = std::make_pair( function, _existing_functions );
          _cache.has( key ) )
@@ -182,7 +179,7 @@ public:
     else
     {
       bool found_one = false;
-      auto on_signal = [&]( signal<Ntk> const& f ) -> bool { 
+      auto on_signal = [&]( signal<Ntk> const& f ) {
         if ( !found_one )
         {
           ++_cache_misses;
@@ -194,7 +191,6 @@ public:
           std::copy( _existing_signals.begin(), _existing_signals.end(), signals.begin() + _initial_size );
           fn( cleanup_dangling( _cache.get_view( key ), ntk, signals.begin(), signals.end() ).front() );
         }
-        return false;
       };
 
       _resyn_fn( _cache.network(), function, _cache.pis().begin(), _cache.pis().begin() + function.num_vars(), on_signal );
@@ -297,8 +293,8 @@ private:
 
 private:
   ResynthesisFn _resyn_fn;
-  mutable network_cache<Ntk, cache_key_t, cache_hash> _cache;
-  mutable std::unordered_set<blacklist_cache_key_t, blacklist_cache_hash, blacklist_cache_equal> _blacklist_cache;
+  network_cache<Ntk, cache_key_t, cache_hash> _cache;
+  std::unordered_set<blacklist_cache_key_t, blacklist_cache_hash, blacklist_cache_equal> _blacklist_cache;
   std::string _cache_filename;
   BlacklistCacheInfo _blacklist_cache_info;
   uint32_t _initial_size{};
@@ -307,9 +303,7 @@ private:
   std::vector<signal<Ntk>> _existing_signals;
 
   /* statistics */
-  mutable uint32_t _cache_hits{};
-  mutable uint32_t _cache_misses{};
+  uint32_t _cache_hits{};
+  uint32_t _cache_misses{};
 };
 } /* namespace mockturtle */
-
-#endif

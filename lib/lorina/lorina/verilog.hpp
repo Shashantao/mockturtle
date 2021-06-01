@@ -1,5 +1,5 @@
 /* lorina: C++ parsing library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,8 +28,6 @@
   \brief Implements simplistic Verilog parser
 
   \author Heinz Riener
-  \author Mathias Soeken
-  \author Siang-Yun (Sonia) Lee
 */
 
 #pragma once
@@ -508,7 +506,7 @@ public:
    *
    * \param os Output stream
    */
-  explicit verilog_writer( std::ostream& os )
+  verilog_writer( std::ostream& os )
     : _os( os )
   {}
 
@@ -868,7 +866,7 @@ public:
     {
       if ( diag )
       {
-        diag->report( diag_id::ERR_VERILOG_MODULE_HEADER );
+        diag->report( diagnostic_level::error, "cannot parse module header" );
       }
       return false;
     }
@@ -885,7 +883,7 @@ public:
         {
           if ( diag )
           {
-            diag->report( diag_id::ERR_VERILOG_INPUT_DECLARATION );
+            diag->report( diagnostic_level::error, "cannot parse input declaration" );
           }
           return false;
         }
@@ -897,7 +895,7 @@ public:
         {
           if ( diag )
           {
-            diag->report( diag_id::ERR_VERILOG_OUTPUT_DECLARATION );
+            diag->report( diagnostic_level::error, "cannot parse output declaration" );
           }
           return false;
         }
@@ -909,7 +907,7 @@ public:
         {
           if ( diag )
           {
-            diag->report( diag_id::ERR_VERILOG_WIRE_DECLARATION );
+            diag->report( diagnostic_level::error, "cannot parse wire declaration" );
           }
           return false;
         }
@@ -921,7 +919,7 @@ public:
         {
           if ( diag )
           {
-            diag->report( diag_id::ERR_VERILOG_WIRE_DECLARATION );
+            diag->report( diagnostic_level::error, "cannot parse wire declaration" );
           }
           return false;
         }
@@ -941,7 +939,7 @@ public:
         {
           if ( diag )
           {
-            diag->report( diag_id::ERR_VERILOG_ASSIGNMENT );
+            diag->report( diagnostic_level::error, "cannot parse assign statement" );
           }
           return false;
         }
@@ -956,7 +954,7 @@ public:
         {
           if ( diag )
           {
-            diag->report( diag_id::ERR_VERILOG_MODULE_INSTANTIATION_STATEMENT );
+            diag->report( diagnostic_level::error, "cannot parse module instantiation statement" );
           }
           return false;
         }
@@ -976,9 +974,8 @@ public:
     {
       if ( diag )
       {
-        diag->report( diag_id::WRN_UNRESOLVED_DEPENDENCY )
-          .add_argument( r.first )
-          .add_argument( r.second );
+        diag->report( diagnostic_level::warning,
+                      fmt::format( "unresolved dependencies: `{0}` requires `{1}`",  r.first, r.second ) );
       }
     }
 
@@ -1213,8 +1210,8 @@ public:
     {
       if ( diag )
       {
-        diag->report( diag_id::ERR_VERILOG_ASSIGNMENT_RHS )
-          .add_argument( lhs );
+        diag->report( diagnostic_level::error,
+                      fmt::format( "cannot parse expression on right-hand side of assign `{0}`", lhs ) );
       }
       return false;
     }
@@ -1435,7 +1432,7 @@ private:
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_verilog( std::istream& in, const verilog_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_verilog( std::istream& in, const verilog_reader& reader, diagnostic_engine* diag = nullptr )
 {
   verilog_parser parser( in, reader, diag );
   auto result = parser.parse_module();
@@ -1459,14 +1456,15 @@ private:
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_verilog( const std::string& filename, const verilog_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_verilog( const std::string& filename, const verilog_reader& reader, diagnostic_engine* diag = nullptr )
 {
   std::ifstream in( detail::word_exp_filename( filename ), std::ifstream::in );
   if ( !in.is_open() )
   {
     if ( diag )
     {
-      diag->report( diag_id::ERR_FILE_OPEN ).add_argument( filename );
+      diag->report( diagnostic_level::fatal,
+                    fmt::format( "could not open file `{0}`", filename ) );
     }
     return return_code::parse_error;
   }

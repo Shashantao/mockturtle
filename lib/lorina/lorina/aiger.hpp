@@ -1,5 +1,5 @@
 /* lorina: C++ parsing library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,8 +28,6 @@
   \brief Implements Aiger parser
 
   \author Heinz Riener
-  \author Mathias Soeken
-  \author Siang-Yun (Sonia) Lee
 */
 
 #pragma once
@@ -101,23 +99,23 @@ public:
 
   /*! \brief Callback method for parsed input.
    *
-   * \param pos Position in input list
+   * \param index Index of the input
    * \param lit Assigned literal
    */
-  virtual void on_input( uint32_t pos, uint32_t lit ) const
+  virtual void on_input( uint32_t index, uint32_t lit ) const
   {
-    (void)pos;
+    (void)index;
     (void)lit;
   }
 
   /*! \brief Callback method for parsed output.
    *
-   * \param pos Position in output list
+   * \param index Index of the output
    * \param lit Assigned literal
    */
-  virtual void on_output( uint32_t pos, uint32_t lit ) const
+  virtual void on_output( uint32_t index, uint32_t lit ) const
   {
-    (void)pos;
+    (void)index;
     (void)lit;
   }
 
@@ -149,133 +147,133 @@ public:
 
   /*! \brief Callback method for parsed bad state property.
    *
-   * \param index Position in the list of bad state property
+   * \param index Index of the bad state property
    * \param lit Assigned literal
    */
-  virtual void on_bad_state( uint32_t pos, uint32_t lit ) const
+  virtual void on_bad_state( uint32_t index, uint32_t lit ) const
   {
-    (void)pos;
+    (void)index;
     (void)lit;
   }
 
   /*! \brief Callback method for parsed constraint.
    *
-   * \param index Position in the list of constraint
+   * \param index Index of the constraint
    * \param lit Assigned literal
    */
-  virtual void on_constraint( uint32_t pos, uint32_t lit ) const
+  virtual void on_constraint( uint32_t index, uint32_t lit ) const
   {
-    (void)pos;
+    (void)index;
     (void)lit;
   }
 
   /*! \brief Callback method for parsed fairness constraints.
    *
-   * \param index Position in the list of fairness constraint
+   * \param index Index of the fairness constraint
    * \param lit Assigned literal
    */
-  virtual void on_fairness( uint32_t pos, uint32_t lit ) const
+  virtual void on_fairness( uint32_t index, uint32_t lit ) const
   {
-    (void)pos;
+    (void)index;
     (void)lit;
   }
 
   /*! \brief Callback method for parsed header of justice property.
    *
-   * \param index Position in the list of the justice property
+   * \param index Index of the justice property
    * \param size Number of assigned literals
    */
-  virtual void on_justice_header( uint32_t pos, uint64_t size ) const
+  virtual void on_justice_header( uint32_t index, uint64_t size ) const
   {
-    (void)pos;
+    (void)index;
     (void)size;
   }
 
   /*! \brief Callback method for parsed justice property.
    *
-   * \param index Position in the list of the justice property
+   * \param index Index of the justice property
    * \param lits Assigned literals
    */
-  virtual void on_justice( uint32_t pos, const std::vector<uint32_t>& lits ) const
+  virtual void on_justice( uint32_t index, const std::vector<uint32_t>& lits ) const
   {
-    (void)pos;
+    (void)index;
     (void)lits;
   }
 
   /*! \brief Callback method for parsed input name.
    *
-   * \param pos Position in input list
+   * \param index Index of the input
    * \param name Input name
    */
-  virtual void on_input_name( uint32_t pos, const std::string& name ) const
+  virtual void on_input_name( uint32_t index, const std::string& name ) const
   {
-    (void)pos;
+    (void)index;
     (void)name;
   }
 
   /*! \brief Callback method for parsed latch name.
    *
-   * \param pos Position in latch list
+   * \param index Index of the latch
    * \param name Latch name
    */
-  virtual void on_latch_name( uint32_t pos, const std::string& name ) const
+  virtual void on_latch_name( uint32_t index, const std::string& name ) const
   {
-    (void)pos;
+    (void)index;
     (void)name;
   }
 
   /*! \brief Callback method for parsed output name.
    *
-   * \param pos Position in output list
+   * \param index Index of the output
    * \param name Output name
    */
-  virtual void on_output_name( uint32_t pos, const std::string& name ) const
+  virtual void on_output_name( uint32_t index, const std::string& name ) const
   {
-    (void)pos;
+    (void)index;
     (void)name;
   }
 
   /*! \brief Callback method for a parsed name of a bad state property.
    *
-   * \param pos Position in list of bad state property
+   * \param index Index of the bad state property
    * \param name Name of the bad state property
    */
-  virtual void on_bad_state_name( uint32_t pos, const std::string& name ) const
+  virtual void on_bad_state_name( uint32_t index, const std::string& name ) const
   {
-    (void)pos;
+    (void)index;
     (void)name;
   }
 
   /*! \brief Callback method for a parsed name of an invariant constraint.
    *
-   * \param pos Position in constraint list
+   * \param index Index of the constraint
    * \param name Constraint name
    */
-  virtual void on_constraint_name( uint32_t pos, const std::string& name ) const
+  virtual void on_constraint_name( uint32_t index, const std::string& name ) const
   {
-    (void)pos;
+    (void)index;
     (void)name;
   }
 
   /*! \brief Callback method for a parsed name of a justice property.
    *
-   * \param pos Position in the list of justice property
+   * \param index Index of the justice property
    * \param name Name of the fairness constraint
    */
-  virtual void on_justice_name( uint32_t pos, const std::string& name ) const
+  virtual void on_justice_name( uint32_t index, const std::string& name ) const
   {
-    (void)pos;
+    (void)index;
     (void)name;
   }
 
   /*! \brief Callback method for a parsed name of a fairness constraint.
    *
-   * \param pos Position in list of fairness constraint
+   * \param index Index of the fairness constraint
    * \param name Name of the fairness constraint
    */
-  virtual void on_fairness_name( uint32_t pos, const std::string& name ) const
+  virtual void on_fairness_name( uint32_t index, const std::string& name ) const
   {
-    (void)pos;
+    (void)index;
     (void)name;
   }
 
@@ -381,39 +379,39 @@ public:
     _os << lit << std::endl;
   }
 
-  void on_input_name( uint32_t pos, const std::string& name ) const override
+  void on_input_name( uint32_t index, const std::string& name ) const override
   {
-    _os << "i" << pos << ' ' << name << std::endl;
+    _os << "i" << index << ' ' << name << std::endl;
   }
 
-  void on_latch_name( uint32_t pos, const std::string& name ) const override
+  void on_latch_name( uint32_t index, const std::string& name ) const override
   {
-    _os << "l" << pos << ' ' << name << std::endl;
+    _os << "l" << index << ' ' << name << std::endl;
   }
 
-  void on_output_name( uint32_t pos, const std::string& name ) const override
+  void on_output_name( uint32_t index, const std::string& name ) const override
   {
-    _os << "o" << pos << ' ' << name << std::endl;
+    _os << "o" << index << ' ' << name << std::endl;
   }
 
-  void on_bad_state_name( uint32_t pos, const std::string& name ) const override
+  void on_bad_state_name( uint32_t index, const std::string& name ) const override
   {
-    _os << "b" << pos << ' ' << name << std::endl;
+    _os << "b" << index << ' ' << name << std::endl;
   }
 
-  void on_constraint_name( uint32_t pos, const std::string& name ) const override
+  void on_constraint_name( uint32_t index, const std::string& name ) const override
   {
-    _os << "c" << pos << ' ' << name << std::endl;
+    _os << "c" << index << ' ' << name << std::endl;
   }
 
-  void on_justice_name( uint32_t pos, const std::string& name ) const override
+  void on_justice_name( uint32_t index, const std::string& name ) const override
   {
-    _os << "j" << pos << ' ' << name << std::endl;
+    _os << "j" << index << ' ' << name << std::endl;
   }
 
-  void on_fairness_name( uint32_t pos, const std::string& name ) const override
+  void on_fairness_name( uint32_t index, const std::string& name ) const override
   {
-    _os << "f" << pos << ' ' << name << std::endl;
+    _os << "f" << index << ' ' << name << std::endl;
   }
 
   void on_comment( const std::string& comment ) const override
@@ -448,13 +446,13 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_ascii_aiger( std::istream& in, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_ascii_aiger( std::istream& in, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
 {
   return_code result = return_code::success;
 
   std::smatch m;
   std::string header_line;
-  detail::getline( in, header_line );
+  std::getline( in, header_line );
 
   uint64_t _m, _i, _l, _o, _a, _b, _c, _j, _f;
 
@@ -487,7 +485,8 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   {
     if ( diag )
     {
-      diag->report( diag_id::ERR_AIGER_HEADER ).add_argument( header_line );
+      diag->report( diagnostic_level::fatal,
+                    fmt::format( "could not parse AIGER header `{0}`", header_line ) );
     }
     return return_code::parse_error;
   }
@@ -497,7 +496,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* inputs */
   for ( auto i = 0ul; i < _i; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto index = std::atol( line.c_str() );
     reader.on_input( i, index );
   }
@@ -505,14 +504,15 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* latches */
   for ( auto i = 0ul; i < _l; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto tokens = detail::split( line,  " " );
 
     if ( !(tokens.size() <= 3u) )
     {
       if ( diag )
       {
-        diag->report( diag_id::ERR_AIGER_LATCH_DECLARATION ).add_argument( line );
+        diag->report( diagnostic_level::fatal,
+                      fmt::format( "could not parse declaration of LATCH `{0}`", line ) );
       }
       return return_code::parse_error;
     }
@@ -539,7 +539,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* outputs */
   for ( auto i = 0ul; i < _o; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto lit = std::atol( line.c_str() );
     reader.on_output( i, lit );
   }
@@ -547,7 +547,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* bad state properties */
   for ( auto i = 0ul; i < _b; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto lit = std::atol( line.c_str() );
     reader.on_bad_state( i, lit );
   }
@@ -555,7 +555,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* constraints */
   for ( auto i = 0ul; i < _c; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto lit = std::atol( line.c_str() );
     reader.on_constraint( i, lit );
   }
@@ -564,7 +564,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   std::vector<uint64_t> justice_sizes;
   for ( auto i = 0ul; i < _j; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto justice_size = std::atol( line.c_str() );
     justice_sizes.emplace_back( justice_size );
     reader.on_justice_header( i, justice_size );
@@ -575,7 +575,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
     std::vector<uint32_t> lits;
     for ( auto j = 0ul; j < justice_sizes[i]; ++j )
     {
-      detail::getline( in, line );
+      std::getline( in, line );
       const auto lit = std::atol( line.c_str() );
       lits.emplace_back( lit );
     }
@@ -585,7 +585,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* fairness */
   for ( auto i = 0ul; i < _f; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto lit = std::atol( line.c_str() );
     reader.on_fairness( i, lit );
   }
@@ -593,14 +593,15 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* ands */
   for ( auto i = 0ul; i < _a; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto tokens = detail::split( line, " " );
 
     if ( !(tokens.size() == 3u) )
     {
       if ( diag )
       {
-        diag->report( diag_id::ERR_AIGER_AND_DECLARATION ).add_argument( line );
+        diag->report( diagnostic_level::fatal,
+                      fmt::format( "could not parse declaration of AND gate `{0}`", line ) );
       }
       return return_code::parse_error;
     }
@@ -612,7 +613,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   }
 
   /* parse names and comments */
-  while ( detail::getline( in, line ) )
+  while ( std::getline( in, line ) )
   {
     if ( std::regex_search( line, m, aig_regex::input ) )
     {
@@ -645,7 +646,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
     else if ( line == "c" )
     {
       std::string comment = "";
-      while ( detail::getline( in, line ) )
+      while ( std::getline( in, line ) )
       {
         comment += line;
       }
@@ -667,14 +668,15 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_ascii_aiger( const std::string& filename, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_ascii_aiger( const std::string& filename, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
 {
   std::ifstream in( detail::word_exp_filename( filename ), std::ifstream::in );
   if ( !in.is_open() )
   {
     if ( diag )
     {
-      diag->report( diag_id::ERR_FILE_OPEN ).add_argument( filename );
+      diag->report( diagnostic_level::fatal,
+                    fmt::format( "could not open file `{0}`", filename ) );
     }
     return return_code::parse_error;
   }
@@ -696,13 +698,13 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_aiger( std::istream& in, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_aiger( std::istream& in, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
 {
   return_code result = return_code::success;
 
   std::smatch m;
   std::string header_line;
-  detail::getline( in, header_line );
+  std::getline( in, header_line );
 
   uint32_t _m, _i, _l, _o, _a, _b, _c, _j, _f;
 
@@ -735,7 +737,8 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   {
     if ( diag )
     {
-      diag->report( diag_id::ERR_AIGER_HEADER ).add_argument( header_line );
+      diag->report( diagnostic_level::fatal,
+                    fmt::format( "could not parse AIGER header `{0}`", header_line ) );
     }
     return return_code::parse_error;
   }
@@ -751,7 +754,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* latches */
   for ( auto i = 0u; i < _l; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto tokens = detail::split( line, " " );
     const auto next = std::atoi( tokens[0u].c_str() );
     aiger_reader::latch_init_value init_value = aiger_reader::latch_init_value::NONDETERMINISTIC;
@@ -772,21 +775,21 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
 
   for ( auto i = 0u; i < _o; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     reader.on_output( i, std::atol( line.c_str() ) );
   }
 
   /* bad state properties */
   for ( auto i = 0u; i < _b; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     reader.on_bad_state( i, std::atol( line.c_str() ) );
   }
 
   /* constraints */
   for ( auto i = 0u; i < _c; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     reader.on_constraint( i, std::atol( line.c_str() ) );
   }
 
@@ -794,7 +797,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   std::vector<uint64_t> justice_sizes;
   for ( auto i = 0u; i < _j; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     const auto justice_size = std::atol( line.c_str() );
     justice_sizes.emplace_back( justice_size );
     reader.on_justice_header( i, justice_size );
@@ -805,7 +808,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
     std::vector<uint32_t> lits;
     for ( auto j = 0u; j < justice_sizes[i]; ++j )
     {
-      detail::getline( in, line );
+      std::getline( in, line );
       const auto lit = std::atol( line.c_str() );
       lits.emplace_back( lit );
     }
@@ -815,7 +818,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   /* fairness */
   for ( auto i = 0u; i < _f; ++i )
   {
-    detail::getline( in, line );
+    std::getline( in, line );
     reader.on_fairness( i, std::atol( line.c_str() ) );
   }
 
@@ -845,7 +848,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
   }
 
   /* parse names and comments */
-  while ( detail::getline( in, line ) )
+  while ( std::getline( in, line ) )
   {
     if ( std::regex_search( line, m, aig_regex::input ) )
     {
@@ -878,7 +881,7 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
     else if ( line == "c" )
     {
       std::string comment = "";
-      while ( detail::getline( in, line ) )
+      while ( std::getline( in, line ) )
       {
         comment += line;
       }
@@ -900,14 +903,15 @@ static std::regex fairness( R"(^f(\d+) (.*)$)" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_aiger( const std::string& filename, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_aiger( const std::string& filename, const aiger_reader& reader, diagnostic_engine* diag = nullptr )
 {
   std::ifstream in( detail::word_exp_filename( filename ), std::ifstream::binary );
   if ( !in.is_open() )
   {
     if ( diag )
     {
-      diag->report( diag_id::ERR_FILE_OPEN ).add_argument( filename );
+      diag->report( diagnostic_level::fatal,
+                    fmt::format( "could not open file `{0}`", filename ) );
     }
     return return_code::parse_error;
   }

@@ -1,5 +1,5 @@
 /* lorina: C++ parsing library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,7 +28,6 @@
   \brief Implements bench parser
 
   \author Heinz Riener
-  \author Siang-Yun (Sonia) Lee
 */
 
 #pragma once
@@ -173,7 +172,7 @@ static std::regex gate_asgn( R"((.*)\s+=\s+(.*))" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_bench( std::istream& in, const bench_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_bench( std::istream& in, const bench_reader& reader, diagnostic_engine* diag = nullptr )
 {
   return_code result = return_code::success;
 
@@ -263,7 +262,8 @@ static std::regex gate_asgn( R"((.*)\s+=\s+(.*))" );
 
     if ( diag )
     {
-      diag->report( diag_id::ERR_PARSE_LINE ).add_argument( line );
+      diag->report( diagnostic_level::error,
+                    fmt::format( "cannot parse line `{0}`", line ) );
     }
 
     result = return_code::parse_error;
@@ -278,9 +278,8 @@ static std::regex gate_asgn( R"((.*)\s+=\s+(.*))" );
   {
     if ( diag )
     {
-      diag->report( diag_id::WRN_UNRESOLVED_DEPENDENCY )
-        .add_argument( r.first )
-        .add_argument( r.second );
+      diag->report( diagnostic_level::error,
+                    fmt::format( "unresolved dependencies: `{0}` requires `{1}`",  r.first, r.second ) );
     }
   }
 
@@ -297,14 +296,15 @@ static std::regex gate_asgn( R"((.*)\s+=\s+(.*))" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_bench( const std::string& filename, const bench_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_bench( const std::string& filename, const bench_reader& reader, diagnostic_engine* diag = nullptr )
 {
   std::ifstream in( detail::word_exp_filename( filename ), std::ifstream::in );
   if ( !in.is_open() )
   {
     if ( diag )
     {
-      diag->report( diag_id::ERR_FILE_OPEN ).add_argument( filename );
+      diag->report( diagnostic_level::fatal,
+                    fmt::format( "could not open file `{0}`", filename ) );
     }
     return return_code::parse_error;
   }

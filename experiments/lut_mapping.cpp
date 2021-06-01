@@ -50,10 +50,7 @@ int main()
   {
     fmt::print( "[i] processing {}\n", benchmark );
     aig_network aig;
-    if ( lorina::read_aiger( benchmark_path( benchmark ), aiger_reader( aig ) ) != lorina::return_code::success )
-    {
-      continue;
-    }
+    lorina::read_aiger( benchmark_path( benchmark ), aiger_reader( aig ) );
 
     lut_mapping_stats st;
     mapping_view<aig_network, true> mapped_aig{aig};

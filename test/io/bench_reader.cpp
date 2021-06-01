@@ -23,8 +23,7 @@ TEST_CASE( "read a BENCH file into K-LUT network", "[bench_reader]" )
                    "carry = LUT 0xe8 (a, b, c)\n"};
 
   std::istringstream in( file );
-  auto const result = lorina::read_bench( in, bench_reader( klut ) );
-  CHECK( result == lorina::return_code::success );
+  lorina::read_bench( in, bench_reader( klut ) );
 
   CHECK( klut.size() == 7 );
   CHECK( klut.num_pis() == 3 );

@@ -1,5 +1,5 @@
 /* lorina: C++ parsing library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,7 +28,6 @@
   \brief Implements pla parser
 
   \author Heinz Riener
-  \author Siang-Yun (Sonia) Lee
 */
 
 #pragma once
@@ -120,7 +119,7 @@ public:
    *
    * \param os Output stream
    */
-  explicit pla_writer( std::ostream& os )
+  pla_writer( std::ostream& os )
     : _os( os )
   {}
 
@@ -251,7 +250,7 @@ static std::regex term( R"(^([01\-]+)\s+([01\-]+)$)" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_pla( std::istream& in, const pla_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_pla( std::istream& in, const pla_reader& reader, diagnostic_engine* diag = nullptr )
 {
   auto loc = 0ul;
   auto errors = 0ul;
@@ -294,9 +293,10 @@ static std::regex term( R"(^([01\-]+)\s+([01\-]+)$)" );
         }
 
         if ( diag )
-        {
-          diag->report( diag_id::ERR_UNSUPPORTED_KEYWORD ).add_argument( line );
-        }
+          diag->report( diagnostic_level::error,
+                        fmt::format( "Unsupported keyword `{2}`\n"
+                                     "in line {0}: `{1}`",
+                                     loc, line, std::string( m[1] ) ) );
         ++errors;
         return true; /* understood error case, go on parsing */
       }
@@ -311,9 +311,10 @@ static std::regex term( R"(^([01\-]+)\s+([01\-]+)$)" );
     }
 
     if ( diag )
-    {
-      diag->report( diag_id::ERR_PARSE_LINE ).add_argument( line );
-    }
+      diag->report( diagnostic_level::error,
+                    fmt::format( "Unable to parse line\n"
+                                 "line {0}: `{1}`",
+                                 loc, line ) );
     ++errors;
     return true; /* understood error case, go on parsing */
   } );
@@ -338,14 +339,15 @@ static std::regex term( R"(^([01\-]+)\s+([01\-]+)$)" );
  * \param diag An optional diagnostic engine with callback methods for parse errors
  * \return Success if parsing has been successful, or parse error if parsing has failed
  */
-[[nodiscard]] inline return_code read_pla( const std::string& filename, const pla_reader& reader, diagnostic_engine* diag = nullptr )
+inline return_code read_pla( const std::string& filename, const pla_reader& reader, diagnostic_engine* diag = nullptr )
 {
   std::ifstream in( detail::word_exp_filename( filename ), std::ifstream::in );
   if ( !in.is_open() )
   {
     if ( diag )
     {
-      diag->report( diag_id::ERR_FILE_OPEN ).add_argument( filename );
+      diag->report( diagnostic_level::fatal,
+                    fmt::format( "could not open file `{0}`", filename ) );
     }
     return return_code::parse_error;
   }

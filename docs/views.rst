@@ -101,13 +101,10 @@ algorithm.  Several views are implemented in mockturtle.
 .. doxygenclass:: mockturtle::out_of_place_color_view
    :members:
 
-`aqfp_view`: Counts number of buffers and splitters for AQFP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`aqfp_view`: Counts number of buffers and splitters after AQFP technology mapping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Header:** ``mockturtle/views/aqfp_view.hpp``
-
-.. doxygenstruct:: mockturtle::aqfp_view_params
-   :members:
 
 .. doxygenclass:: mockturtle::aqfp_view
    :members:

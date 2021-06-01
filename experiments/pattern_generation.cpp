@@ -47,11 +47,7 @@ int main()
   {
     fmt::print( "[i] processing {}\n", benchmark );
     aig_network aig;
-    if ( lorina::read_aiger( benchmark_path( benchmark ), aiger_reader( aig ) ) != lorina::return_code::success )
-    {
-      continue;
-    }
-
+    lorina::read_aiger( benchmark_path( benchmark ), aiger_reader( aig ) );
     auto size_before = aig.num_gates();
 
     pattern_generation_params ps;

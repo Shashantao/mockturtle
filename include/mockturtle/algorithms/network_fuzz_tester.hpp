@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2020  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -108,7 +108,7 @@ public:
     }
   }
 
-  template<typename Ntk, typename Fn>
+  template<typename Fn, typename Ntk>
   void rerun_on_benchmark( Fn&& fn )
   {
     /* read benchmark from a file */

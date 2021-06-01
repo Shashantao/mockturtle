@@ -35,8 +35,6 @@ Parameters and statistics
 .. doxygenstruct:: mockturtle::resubstitution_stats
    :members:
 
-.. _resubstitution_structure:
-
 Structure
 ~~~~~~~~~
 

@@ -47,7 +47,7 @@ inline int      Abc_Lit2LitL( int * pMap, int Lit )    { assert(Lit >= 0); retur
          ((type *) malloc(sizeof(type) * (size_t)(num))))
 #endif /* ABC_REALLOC */
 
-inline void Abc_SortMerge( int * p1Beg, int * p1End, int * p2Beg, int * p2End, int * pOut )
+void Abc_SortMerge( int * p1Beg, int * p1End, int * p2Beg, int * p2End, int * pOut )
 {
     int nEntries = (p1End - p1Beg) + (p2End - p2Beg);
     int * pOutBeg = pOut;
@@ -69,7 +69,7 @@ inline void Abc_SortMerge( int * p1Beg, int * p1End, int * p2Beg, int * p2End, i
     assert( pOut - pOutBeg == nEntries );
 }
 
-inline void Abc_Sort_rec( int * pInBeg, int * pInEnd, int * pOutBeg )
+void Abc_Sort_rec( int * pInBeg, int * pInEnd, int * pOutBeg )
 {
     int nSize = pInEnd - pInBeg;
     assert( nSize > 0 );
@@ -107,7 +107,7 @@ inline void Abc_Sort_rec( int * pInBeg, int * pInEnd, int * pOutBeg )
     }
 }
 
-inline void Abc_MergeSort( int * pInput, int nSize )
+void Abc_MergeSort( int * pInput, int nSize )
 {
     int * pOutput;
     if ( nSize < 2 )
@@ -117,7 +117,7 @@ inline void Abc_MergeSort( int * pInput, int nSize )
     free( pOutput );
 }
 
-inline void Abc_MergeSortCostMerge( int * p1Beg, int * p1End, int * p2Beg, int * p2End, int * pOut )
+void Abc_MergeSortCostMerge( int * p1Beg, int * p1End, int * p2Beg, int * p2End, int * pOut )
 {
     int nEntries = (p1End - p1Beg) + (p2End - p2Beg);
     int * pOutBeg = pOut;
@@ -139,7 +139,7 @@ inline void Abc_MergeSortCostMerge( int * p1Beg, int * p1End, int * p2Beg, int *
     assert( pOut - pOutBeg == nEntries );
 }
 
-inline void Abc_MergeSortCost_rec( int * pInBeg, int * pInEnd, int * pOutBeg )
+void Abc_MergeSortCost_rec( int * pInBeg, int * pInEnd, int * pOutBeg )
 {
     int nSize = (pInEnd - pInBeg)/2;
     assert( nSize > 0 );
@@ -183,7 +183,7 @@ inline void Abc_MergeSortCost_rec( int * pInBeg, int * pInEnd, int * pOutBeg )
     }
 }
 
-inline int * Abc_MergeSortCost( int * pCosts, int nSize )
+int * Abc_MergeSortCost( int * pCosts, int nSize )
 {
     int i, * pResult, * pInput, * pOutput;
     pResult = (int *) calloc( sizeof(int), nSize );

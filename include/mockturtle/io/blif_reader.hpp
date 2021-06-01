@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -26,10 +26,7 @@
 /*!
   \file blif_reader.hpp
   \brief Lorina reader for BLIF files
-
   \author Heinz Riener
-  \author Mathias Soeken
-  \author Max Austin
 */
 
 #pragma once
@@ -96,11 +93,6 @@ public:
 
   virtual void on_model( const std::string& model_name ) const override
   {
-    if constexpr ( has_set_network_name_v<Ntk> )
-    {
-      ntk_.set_network_name( model_name );
-    }
-
     (void)model_name;
   }
 

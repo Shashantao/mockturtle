@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,7 +28,6 @@
   \brief Implements methods to declare names for network signals
 
   \author Heinz Riener
-  \author Mathias Soeken
 */
 
 #pragma once
@@ -49,14 +48,15 @@ public:
   using signal = typename Ntk::signal;
 
 public:
-  template<typename StrType = const char*>
-  names_view( Ntk const& ntk = Ntk(), StrType name = "" )
-      : Ntk( ntk ), _network_name{ name }
+  names_view( Ntk const& ntk = Ntk() )
+    : Ntk( ntk )
   {
   }
 
   names_view( names_view<Ntk> const& named_ntk )
-      : Ntk( named_ntk ), _network_name( named_ntk._network_name ), _signal_names( named_ntk._signal_names ), _output_names( named_ntk._output_names )
+    : Ntk( named_ntk )
+    , _signal_names( named_ntk._signal_names )
+    , _output_names( named_ntk._output_names )
   {
   }
 
@@ -65,12 +65,12 @@ public:
     std::map<signal, std::string> new_signal_names;
     std::vector<signal> current_pis;
     Ntk::foreach_pi( [&]( auto const& n ) {
-      current_pis.emplace_back( Ntk::make_signal( n ) );
-    } );
+        current_pis.emplace_back( Ntk::make_signal( n ) );
+      });
     named_ntk.foreach_pi( [&]( auto const& n, auto i ) {
-      if ( const auto it = _signal_names.find( current_pis[i] ); it != _signal_names.end() )
-        new_signal_names[named_ntk.make_signal( n )] = it->second;
-    } );
+        if ( const auto it = _signal_names.find( current_pis[i] ); it != _signal_names.end() )
+          new_signal_names[named_ntk.make_signal( n )] = it->second;
+      } );
 
     Ntk::operator=( named_ntk );
     _signal_names = new_signal_names;
@@ -95,17 +95,6 @@ public:
     {
       set_output_name( index, name );
     }
-  }
-
-  template<typename StrType = const char*>
-  void set_network_name( StrType name ) noexcept
-  {
-    _network_name = name;
-  }
-
-  std::string get_network_name() const noexcept
-  {
-    return _network_name;
   }
 
   bool has_name( signal const& s ) const
@@ -139,15 +128,14 @@ public:
   }
 
 private:
-  std::string _network_name;
   std::map<signal, std::string> _signal_names;
   std::map<uint32_t, std::string> _output_names;
 }; /* names_view */
 
 template<class T>
-names_view( T const& ) -> names_view<T>;
+names_view(T const&) -> names_view<T>;
 
 template<class T>
-names_view( T const&, typename T::signal const& ) -> names_view<T>;
+names_view(T const&, typename T::signal const&) -> names_view<T>;
 
 } // namespace mockturtle

@@ -17,8 +17,6 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 **************************************************************************************************/
 
-#pragma once
-
 #ifndef Minisat_IntTypes_h
 #define Minisat_IntTypes_h
 
@@ -1437,6 +1435,10 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #ifndef Minisat_System_h
 #define Minisat_System_h
 
+#if defined(__linux__)
+#include <fpu_control.h>
+#endif
+
 
 
 //-------------------------------------------------------------------------------------------------
@@ -2547,7 +2549,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 
 #include <math.h>
 #include <algorithm>
-#include <csignal>
+#include <signal.h>
 // #include <unistd.h>
 
 
@@ -4578,7 +4580,7 @@ static void SIGALRM_switch(int signum) { switch_mode = true; }
 // NOTE: assumptions passed in member-variable 'assumptions'.
 inline lbool Solver::solve_()
 {
-    std::signal(SIGALRM, SIGALRM_switch);
+    signal(SIGALRM, SIGALRM_switch);
     alarm(2500);
 
     model.clear();

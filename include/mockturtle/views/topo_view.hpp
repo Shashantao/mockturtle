@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -27,9 +27,7 @@
   \file topo_view.hpp
   \brief Reimplements foreach_node to guarantee topological order
 
-  \author Heinz Riener
   \author Mathias Soeken
-  \author Max Austin
 */
 
 #pragma once

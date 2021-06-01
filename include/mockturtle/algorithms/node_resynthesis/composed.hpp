@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -24,16 +24,13 @@
  */
 
 /*!
-  \file composed.hpp
+  \file traits.hpp
   \brief Traits for additional node_resynthesis methods
 
-  \author Heinz Riener
   \author Mathias Soeken
 */
 
 #pragma once
-
-#if !__clang__ || __clang_major__ > 9
 
 #include <cstdint>
 #include <string>
@@ -56,18 +53,18 @@ struct exact_blacklist_cache_info
   int conflict_limit;
 };
 
-inline void to_json( nlohmann::json& j, exact_blacklist_cache_info const& info )
+void to_json( nlohmann::json& j, exact_blacklist_cache_info const& info )
 {
   j = info.conflict_limit;
 }
 
-inline void from_json( nlohmann::json const& j, exact_blacklist_cache_info& info )
+void from_json( nlohmann::json const& j, exact_blacklist_cache_info& info )
 {
   j.get_to( info.conflict_limit );
 }
 
 template<class Ntk>
-auto cached_exact_xag_resynthesis( std::string const& cache_filename, uint32_t input_limit = 12u, int conflict_limit = 10e5 )
+auto cached_exact_xag_resynthesis( std::string const& cache_filename, int conflict_limit = 10e5, uint32_t input_limit = 12u )
 {
   exact_resynthesis_params exact_ps;
   exact_ps.conflict_limit = conflict_limit;
@@ -77,6 +74,4 @@ auto cached_exact_xag_resynthesis( std::string const& cache_filename, uint32_t i
   return cached_resynthesis<Ntk, decltype( exact_resyn ), exact_blacklist_cache_info>( exact_resyn, input_limit, cache_filename, info );
 }
 
-} /* mockturtle */
-
-#endif
+}

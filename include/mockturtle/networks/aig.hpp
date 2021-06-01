@@ -1,5 +1,5 @@
 /* mockturtle: C++ logic network library
- * Copyright (C) 2018-2021  EPFL
+ * Copyright (C) 2018-2019  EPFL
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -27,12 +27,8 @@
   \file aig.hpp
   \brief AIG logic network implementation
 
-  \author Heinz Riener
-  \author Jinzheng Tu
   \author Mathias Soeken
-  \author Max Austin
-  \author Siang-Yun (Sonia) Lee
-  \author Walter Lau Neto
+  \author Heinz Riener
 */
 
 #pragma once
@@ -171,13 +167,6 @@ public:
     {
       return {index, complement};
     }
-
-#if __cplusplus > 201703L
-    bool operator==( aig_storage::node_type::pointer_type const& other ) const
-    {
-      return data == other.data;
-    }
-#endif
   };
 
   aig_network()
@@ -346,7 +335,7 @@ public:
 
     for ( auto const& fn : _events->on_add )
     {
-      (*fn)( index );
+      fn( index );
     }
 
     return {index, 0};
@@ -515,7 +504,7 @@ public:
 
     for ( auto const& fn : _events->on_modified )
     {
-      (*fn)( n, {old_child0, old_child1} );
+      fn( n, {old_child0, old_child1} );
     }
 
     return std::nullopt;
@@ -555,7 +544,7 @@ public:
 
     for ( auto const& fn : _events->on_delete )
     {
-      (*fn)( n );
+      fn( n );
     }
 
     /* if the node has been deleted, then deref fanout_size of
@@ -642,7 +631,7 @@ public:
 
     /* register event to delete substitutions if their right-hand side
        nodes get deleted */
-    auto clean_sub_event = _events->register_delete_event( clean_substitutions );
+    _events->on_delete.push_back( clean_substitutions );
 
     /* increment fanout_size of all signals to be used in
        substitutions to ensure that they will not be deleted */
@@ -699,7 +688,7 @@ public:
       decr_fanout_size( get_node( new_signal ) );
     }
 
-    _events->release_delete_event( clean_sub_event );
+    _events->on_delete.pop_back();
   }
 #pragma endregion
 
